@@ -1,0 +1,29 @@
+{
+    "name": "codebykyle/nova-custom-navigation",
+    "description": "A Laravel Nova custom navigation component with grouped dashboards.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodeByKyle\\NovaCustomNavigation\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodeByKyle\\NovaCustomNavigation\\ToolServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
