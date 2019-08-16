@@ -1,14 +1,16 @@
 Nova.booting((Vue, router, store) => {
     router.addRoutes([
         {
-            name: 'nav-group-dashboard',
-            path: '/group-dashboard/:codeName',
+            name: 'category-dashboard',
+            path: '/category-dashboard/:categoryName',
             component: require('./components/Tool'),
             props: route => {
                 return {
-                    codeName: route.params.codeName
+                    categoryName: route.params.categoryName
                 }
             }
         },
-    ])
-})
+    ]);
+
+    Vue.component('navigation-group', require('./components/NavigationGroup'));
+});
