@@ -1,19 +1,16 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation;
+namespace CodeByKyle\NovaCustomNavigation\Components\Groups;
 
-use CodeByKyle\NovaCustomNavigation\Links\Redirect;
+use CodeByKyle\NovaCustomNavigation\Components\NavigationGroup;
+use CodeByKyle\NovaCustomNavigation\Components\Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Metable;
-use Laravel\Nova\Nova;
 use Laravel\Nova\ResolvesCards;
 use Laravel\Nova\Resource;
-use Laravel\Nova\Tool;
-use JsonSerializable;
 
-
- class DashboardGroup extends NavigationGroup implements Redirect
+class DashboardGroup extends NavigationGroup implements Redirect
 {
     use ResolvesCards, Metable;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Links;
+namespace CodeByKyle\NovaCustomNavigation\Components;
 
 use Illuminate\Http\Request;
 
@@ -15,20 +15,12 @@ interface Redirect
     public function linkType();
 
     /**
-     * Get the label of the navigation item
-     *
-     * @return mixed
-     */
-    public function label();
-
-    /**
      * Get the navigation URL or redirect
      *
      * @param Request $request
      * @return mixed
      */
     public function getUrl(Request $request);
-
 
     /**
      * Prepare the tool for JSON serialization.

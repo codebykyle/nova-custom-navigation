@@ -1,24 +1,16 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation;
+namespace CodeByKyle\NovaCustomNavigation\Components;
 
-use CodeByKyle\NovaCustomNavigation\Links\Redirect;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Laravel\Nova\Element;
-use Laravel\Nova\Metable;
-use Laravel\Nova\Nova;
-use Laravel\Nova\ResolvesCards;
-use Laravel\Nova\Resource;
-use Laravel\Nova\Tool;
-use JsonSerializable;
 
 
-abstract class NavigationGroup extends Element implements Redirect
+abstract class NavigationGroup extends Element
 {
-    public static $linkType = 'route';
+    public $component = 'navigation-group';
 
-    public static $component = 'navigation-group';
+    public static $linkType = 'route';
 
     public static $label;
 
@@ -29,23 +21,6 @@ abstract class NavigationGroup extends Element implements Redirect
     public static $allowExpansion = true;
 
     public static $alwaysExpanded = false;
-
-    public function component()
-    {
-        return static::$component;
-    }
-
-    public function linkType()
-    {
-        return static::$linkType;
-    }
-
-    /**
-     * Get the URL when the user clicks the group header
-     * @param Request $request
-     * @return array
-     */
-    public abstract function getUrl(Request $request);
 
     /**
      * Get the links available for this group
@@ -140,7 +115,7 @@ abstract class NavigationGroup extends Element implements Redirect
             }
 
             return $item->jsonSerialize();
-        })->filter->all();
+        })->filter();
     }
 
 
@@ -148,6 +123,7 @@ abstract class NavigationGroup extends Element implements Redirect
      * Prepare the tool for JSON serialization.
      *
      * @return array
+     * @throws
      */
     public function jsonSerialize()
     {
@@ -156,8 +132,8 @@ abstract class NavigationGroup extends Element implements Redirect
         return array_merge(parent::jsonSerialize(), [
             'label' => $this->label(),
             'classes' => $this->resolveClasses($request),
-            'linkType' => $this->linkType(),
-            'icon' => $this->resolveIcon($request),
+            'icon' => $this->resolveIcon(),
+            'allowExpansion' => static::$allowExpansion,
             'alwaysExpanded' => static::$alwaysExpanded,
             'links' => $this->resolveLinks($request),
         ]);

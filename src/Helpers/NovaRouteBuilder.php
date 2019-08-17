@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Links\Helpers;
+namespace CodeByKyle\NovaCustomNavigation\Helpers;
 
 use Laravel\Nova\Resource;
 
@@ -13,14 +13,14 @@ class NovaRouteBuilder
         ]);
     }
 
-    protected static function makeIndexRoute($namespace)
+    public static function makeIndexRoute($namespace)
     {
         return static::makeRoute('index', [
             'resourceName' => static::normalizeResourceName($namespace)
         ]);
     }
 
-    protected static function makeDetailRoute($namespace, $id)
+    public static function makeDetailRoute($namespace, $id)
     {
         return static::makeRoute('detail', [
             'resourceName' => static::normalizeResourceName($namespace),
@@ -28,14 +28,14 @@ class NovaRouteBuilder
         ]);
     }
 
-    protected static function makeCreateRoute($namespace)
+    public static function makeCreateRoute($namespace)
     {
         return static::makeRoute('create', [
             'resourceName' => static::normalizeResourceName($namespace)
         ]);
     }
 
-    protected static function makeEditRoute($namespace, $id)
+    public static function makeEditRoute($namespace, $id)
     {
         return static::makeRoute('edit', [
             'resourceName' => static::normalizeResourceName($namespace),
@@ -43,7 +43,7 @@ class NovaRouteBuilder
         ]);
     }
 
-    protected static function makeLensRoute($namespace, $key)
+    public static function makeLensRoute($namespace, $key)
     {
         return static::makeRoute('lens', [
             'resourceName' => static::normalizeResourceName($namespace),
@@ -61,7 +61,7 @@ class NovaRouteBuilder
         })->values()));
     }
 
-    protected static function makeRoute($name, $params, $filters=null) {
+    public static function makeRoute($name, $params) {
         return [
             'name' => $name,
             'params' => $params,
@@ -73,7 +73,7 @@ class NovaRouteBuilder
      * @param  string $namespace
      * @return string
      */
-    protected static function normalizeResourceName($namespace)
+    public static function normalizeResourceName($namespace)
     {
         return class_exists($namespace) && is_subclass_of($namespace, Resource::class)
             ? $namespace::uriKey() : $namespace;

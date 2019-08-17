@@ -1,12 +1,12 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Links;
+namespace CodeByKyle\NovaCustomNavigation\Components\Items;
 
+use CodeByKyle\NovaCustomNavigation\Components\NavigationItem;
 use Illuminate\Http\Request;
-use Laravel\Nova\Element;
 
 
-class WebLink extends Element implements Redirect
+class ExternalLink extends NavigationItem
 {
     public static $type = 'link';
 
@@ -16,7 +16,7 @@ class WebLink extends Element implements Redirect
 
     public $target;
 
-    public $component = 'web-link';
+    public $component = 'external-link';
 
     /**
      * Link constructor.
@@ -26,9 +26,8 @@ class WebLink extends Element implements Redirect
      */
     public function __construct($label, $url, $target='_blank')
     {
-        parent::__construct();
+        parent::__construct($label);
 
-        $this->label = $label;
         $this->url = $url;
         $this->target = $target;
     }
@@ -71,9 +70,6 @@ class WebLink extends Element implements Redirect
     public function jsonSerialize()
     {
         return array_merge(parent::jsonSerialize(), [
-            'label' => $this->label(),
-            'linkType' => $this->linkType(),
-            'linkUrl' => $this->getUrl(request()),
             'target' => $this->target
         ]);
     }

@@ -1,35 +1,32 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Links;
+namespace CodeByKyle\NovaCustomNavigation\Components;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Element;
 
 
-abstract class ResourceLink extends Element implements Redirect
+abstract class NavigationItem extends Element implements Redirect
 {
-    public static $type = 'route';
+    public static $type = 'link';
 
     public $label;
 
-    public $resource;
+    public $component = 'navigation-item';
 
-    public static $component = 'resource-link';
-
-    public $params;
+    public $visible = true;
 
     /**
-     * IndexLink constructor.
-     * @param $resource
-     * @param string|null $label
-     * @param array|null $params
+     * Link constructor.
+     * @param $label
+     * @param $url
+     * @param string $target
      */
-    public function __construct($resource, $label=null, $params=null) {
+    public function __construct($label)
+    {
         parent::__construct();
 
-        $this->resource = $resource;
         $this->label = $label;
-        $this->params = $params;
     }
 
     /**
@@ -38,11 +35,7 @@ abstract class ResourceLink extends Element implements Redirect
      * @param Request $request
      * @return mixed
      */
-    public function getUrl(Request $request) {
-        return [
-
-        ];
-    }
+    public abstract function getUrl(Request $request);
 
     /**
      * Get the label of the navigation item
@@ -64,6 +57,10 @@ abstract class ResourceLink extends Element implements Redirect
         return $this->label;
     }
 
+    public function visible() {
+        return $this->visible;
+    }
+
     /**
      * Prepare the tool for JSON serialization.
      *
@@ -75,11 +72,7 @@ abstract class ResourceLink extends Element implements Redirect
             'label' => $this->label(),
             'linkType' => $this->linkType(),
             'linkUrl' => $this->getUrl(request()),
+            'visible' => $this->visible()
         ]);
-    }
-
-    public function component()
-    {
-        return static::$component;
     }
 }
