@@ -2,8 +2,8 @@
 
 namespace CodeByKyle\NovaCustomNavigation\Http\Middleware;
 
+use CodeByKyle\NovaCustomNavigation\NovaCustomNavigation;
 use Laravel\Nova\Nova;
-use CodeByKyle\NovaCustomNavigation;
 
 class Authorize
 {

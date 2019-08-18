@@ -45,7 +45,7 @@ abstract class NavigationGroup extends Element
      * Get the label to show in navigation
      * @return string
      */
-    public function label() {
+    public static function label() {
         return static::$label;
     }
 

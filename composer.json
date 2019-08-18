@@ -18,7 +18,10 @@
         "laravel": {
             "providers": [
                 "CodeByKyle\\NovaCustomNavigation\\ToolServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "CustomNavigation": "CodeByKyle\\NovaCustomNavigation\\CustomNavigation"
+            }
         }
     },
     "config": {

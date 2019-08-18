@@ -24,7 +24,7 @@ class ToolServiceProvider extends ServiceProvider
         });
 
         Nova::serving(function (ServingNova $event) {
-            //
+            CustomNavigation::dashboardsIn(app_path('Nova'));
         });
     }
 

@@ -50,11 +50,11 @@
             },
 
             isGroupActive() {
-                let groupResourceName = _.get(this.linkUrl, 'params.resourceName', false);
-                let currentResourceName = _.get(this.$route, 'params.resourceName', false);
+                let dashboardGroupName = _.get(this.linkUrl, 'params.dashboardName', false);
+                let currentDashboardName = _.get(this.$route, 'params.dashboardName', false);
 
-                if(groupResourceName) {
-                    return currentResourceName === groupResourceName;
+                if (currentDashboardName) {
+                    return currentDashboardName === dashboardGroupName;
                 }
 
                 return false;

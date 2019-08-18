@@ -1,18 +1,24 @@
+import Vue from "vue/types/vue";
+
 Nova.booting((Vue, router, store) => {
     router.addRoutes([
         {
-            name: 'category-dashboard',
-            path: '/category-dashboard/:categoryName',
-            component: require('./components/Tool'),
+            name: 'custom-dashboard',
+            path: '/custom-dashboard/:dashboardName',
+            component: require('./components/CustomDashboard'),
             props: route => {
                 return {
-                    categoryName: route.params.categoryName
+                    dashboardName: route.params.dashboardName
                 }
             }
         },
     ]);
 
+    // Top level components
     Vue.component('custom-navigation', require('./components/CustomNavigation'));
+
+    // Dashboards
+    Vue.component('card-dashboard', require('./components/dashboards/CardDashboard'));
 
     // Items
     Vue.component('external-link', require('./components/items/ExternalLink'));
@@ -21,5 +27,6 @@ Nova.booting((Vue, router, store) => {
     // Groups
     Vue.component('collapsible-group', require('./components/groups/CollapsibleGroup'));
     Vue.component('external-link-group', require('./components/groups/ExternalLinkGroup'));
-    Vue.component('route-group', require('./components/groups/RouteGroup'))
+    Vue.component('route-group', require('./components/groups/RouteGroup'));
+    Vue.component('dashboard-group', require('./components/groups/DashboardGroup'));
 });

@@ -6,13 +6,6 @@ use Laravel\Nova\Resource;
 
 class NovaRouteBuilder
 {
-    public static function makeDashboardRoute($dashboardName)
-    {
-        return static::makeRoute('category-dashboard', [
-            'categoryName' => $dashboardName
-        ]);
-    }
-
     public static function makeIndexRoute($namespace)
     {
         return static::makeRoute('index', [
