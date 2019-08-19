@@ -4,7 +4,7 @@
 
 <script>
 import { Minimum } from 'laravel-nova'
-import BasePartitionMetric from './Base/PartitionMetric'
+import BasePartitionMetric from 'laravel-nova/src/components/Base/PartitionMetric'
 
 export default {
     components: {

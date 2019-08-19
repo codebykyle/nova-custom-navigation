@@ -1,0 +1,45 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\kyle\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\kyle\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-0\192.5728.108\jbr\\bin;C:\Users\kyle\AppData\Local\JetBrains\Toolbox\apps\PhpStorm\ch-0\192.5728.108\jbr\\bin\server;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\tools\php73;e:\ProgramFiles\Putty\;E:\ProgramFiles\Git\cmd;C:\ProgramData\ComposerSetup\bin;C:\Program Files\nodejs\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\kyle\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\kyle\AppData\Roaming\npm\node_modules\.bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\tools\php73;e:\ProgramFiles\Putty\;E:\ProgramFiles\Git\cmd;C:\ProgramData\ComposerSetup\bin;E:\ProgramFiles\Python3\Scripts\;E:\ProgramFiles\Python3\;C:\Users\kyle\AppData\Local\Microsoft\WindowsApps;C:\Users\kyle\AppData\Roaming\npm;C:\Users\kyle\AppData\Local\GitHubDesktop\bin;C:\Users\kyle\AppData\Roaming\Composer\vendor\bin;
+
+Yarn version: 
+  1.13.0
+
+Node version: 
+  11.12.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'F:\Code\laravel-accounting\nova-components\NovaCustomNavigation\node_modules\node-sass\vendor\win32-x64-67\binding.node'
+
+npm manifest: 
+  {
+      "private": true,
+      "scripts": {
+          "dev": "npm run development",
+          "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+          "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+          "watch-poll": "npm run watch -- --watch-poll",
+          "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+          "prod": "npm run production",
+          "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+      },
+      "devDependencies": {
+          "cross-env": "^5.0.0",
+          "laravel-mix": "^1.0"
+      },
+      "dependencies": {
+          "vue": "^2.5.0",
+          "laravel-nova": "^1.0.7"
+      }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

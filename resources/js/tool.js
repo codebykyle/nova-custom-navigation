@@ -1,5 +1,3 @@
-import Vue from "vue/types/vue";
-
 Nova.booting((Vue, router, store) => {
     router.addRoutes([
         {
@@ -13,6 +11,8 @@ Nova.booting((Vue, router, store) => {
             }
         },
     ]);
+
+    Vue.component('trend-metric', require('./components/metrics/TrendMetric'));
 
     // Top level components
     Vue.component('custom-navigation', require('./components/CustomNavigation'));

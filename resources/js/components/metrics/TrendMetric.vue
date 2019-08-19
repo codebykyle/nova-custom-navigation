@@ -15,8 +15,8 @@
 
 <script>
 import _ from 'lodash'
-import { InteractsWithDates, Minimum } from 'laravel-nova'
-import BaseTrendMetric from './Base/TrendMetric'
+import { InteractsWithDates, Minimum } from 'laravel-nova';
+import BaseTrendMetric from '@nova/components/Metrics/Base/TrendMetric'
 
 export default {
     name: 'TrendMetric',
