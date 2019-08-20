@@ -2,6 +2,8 @@
 
 namespace CodeByKyle\NovaCustomNavigation\Components;
 
+use App\AccountTransferRule;
+use CodeByKyle\NovaCustomNavigation\Components\Items\ExternalLink;
 use Illuminate\Http\Request;
 use Laravel\Nova\Element;
 
@@ -22,12 +24,23 @@ abstract class NavigationGroup extends Element
 
     public static $alwaysExpanded = false;
 
+    public static $link;
+
     /**
-     * Get the links available for this group
+     * The link to go to when the group is clicked
+     *
+     * @return |null
+     */
+    public function link() {
+        return null;
+    }
+
+    /**
+     * Get the items available for this group
      * @param Request $request
      * @return array
      */
-    public function links(Request $request) {
+    public function items(Request $request) {
         return [];
     }
 
@@ -108,7 +121,7 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return array
      */
-    protected function resolveLinks(Request $request) {
+    protected function resolveItems(Request $request) {
         return collect($this->links($request))->map(function ($item) use ($request) {
             if (!$item->authorize($request)) {
                 return null;
@@ -116,6 +129,15 @@ abstract class NavigationGroup extends Element
 
             return $item->jsonSerialize();
         })->filter();
+    }
+
+    /**
+     * Resolve the link for this group
+     *
+     * @param Request $request
+     */
+    protected function resolveLink(Request $request) {
+
     }
 
 

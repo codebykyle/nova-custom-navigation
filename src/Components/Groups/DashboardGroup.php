@@ -59,7 +59,7 @@ abstract class DashboardGroup extends NavigationGroupRedirect
     protected function makeDashboardRoute($dashboard)
     {
         return NovaRouteBuilder::makeRoute('custom-dashboard', [
-            'dashboardName' => $dashboard::uriKey(),
+            'dashboardName' => $dashboard->uriKey(),
         ]);
     }
 
