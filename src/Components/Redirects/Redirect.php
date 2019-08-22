@@ -1,6 +1,6 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Components;
+namespace CodeByKyle\NovaCustomNavigation\Components\Redirects;
 
 use Illuminate\Http\Request;
 

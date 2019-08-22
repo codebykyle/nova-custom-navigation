@@ -13,5 +13,3 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
 */
-
- Route::get('/dashboard/{slug}', 'CodeByKyle\NovaCustomNavigation\Http\Controllers\DashboardController@show');

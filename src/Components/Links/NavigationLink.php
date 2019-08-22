@@ -1,20 +1,21 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Components;
+namespace CodeByKyle\NovaCustomNavigation\Components\Links;
 
+use CodeByKyle\NovaCustomNavigation\Components\Redirects\Redirect;
 use Illuminate\Http\Request;
 use Laravel\Nova\Element;
 
 
-abstract class NavigationItem extends Element implements Redirect
+abstract class NavigationLink extends Element
 {
-    public static $type = 'link';
-
     public $label;
 
-    public $component = 'navigation-item';
-
     public $visible = true;
+
+    public $redirectsTo;
+
+    public $component = 'navigation-item';
 
     /**
      * Link constructor.
@@ -25,27 +26,26 @@ abstract class NavigationItem extends Element implements Redirect
     public function __construct($label)
     {
         parent::__construct();
-
         $this->label = $label;
+    }
+
+    /**
+     * Set the label of the navigation item
+     * @param $label
+     * @return $this
+     */
+    public function setLabel($label) {
+        $this->label = $label;
+        return $this;
     }
 
     /**
      * Get the navigation URL or redirect
      *
      * @param Request $request
-     * @return mixed
+     * @return Redirect|null
      */
-    public abstract function getUrl(Request $request);
-
-    /**
-     * Get the label of the navigation item
-     *
-     * @return string
-     */
-    public function linkType()
-    {
-        return static::$type;
-    }
+    public abstract function getRedirect(Request $request);
 
     /**
      * Get the label of the navigation item
@@ -57,6 +57,11 @@ abstract class NavigationItem extends Element implements Redirect
         return $this->label;
     }
 
+    /**
+     * If this item is visible
+     *
+     * @return bool
+     */
     public function visible() {
         return $this->visible;
     }
@@ -70,8 +75,7 @@ abstract class NavigationItem extends Element implements Redirect
     {
         return array_merge(parent::jsonSerialize(), [
             'label' => $this->label(),
-            'linkType' => $this->linkType(),
-            'linkUrl' => $this->getUrl(request()),
+            'linkUrl' => $this->getRedirect(request()),
             'visible' => $this->visible()
         ]);
     }

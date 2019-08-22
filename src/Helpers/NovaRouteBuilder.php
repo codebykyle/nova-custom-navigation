@@ -58,7 +58,6 @@ class NovaRouteBuilder
         return [
             'name' => $name,
             'params' => $params,
-            'query' => [],
         ];
     }
 

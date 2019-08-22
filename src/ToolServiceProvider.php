@@ -2,6 +2,8 @@
 
 namespace CodeByKyle\NovaCustomNavigation;
 
+use CodeByKyle\NovaCustomNavigation\Console\Commands\CreateNavigation;
+use CodeByKyle\NovaCustomNavigation\Console\Commands\SyncNavigation;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
@@ -17,15 +19,27 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'nova-custom-navigation');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/overrides', 'nova-test');
+        $this->loadViewsFrom(__DIR__.'/../resources/views/application', 'nova-custom-navigation');
+
+        Nova::serving(function (ServingNova $event) {
+            Nova::tools([
+                new NovaCustomNavigation()
+            ]);
+
+            CustomNavigation::navigationGroupsIn(app_path('Nova/Navigation'));
+        });
 
         $this->app->booted(function () {
             $this->routes();
         });
 
-        Nova::serving(function (ServingNova $event) {
-
-        });
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CreateNavigation::class,
+                SyncNavigation::class
+            ]);
+        }
     }
 
     /**

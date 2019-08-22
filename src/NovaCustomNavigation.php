@@ -9,26 +9,6 @@ use Laravel\Nova\Tool;
 
 class NovaCustomNavigation extends Tool
 {
-    public $navigationGroups;
-
-    public function __construct($groups=[])
-    {
-        parent::__construct();
-        $this->navigationGroups = $groups;
-    }
-
-    /**
-     * Add an item to the navigation group
-     *
-     * @param NavigationGroup|array $group
-     * @return $this
-     */
-    public function addGroups($group) {
-        $groups[] = $group;
-        $this->navigationGroups = array_merge($this->navigationGroups, $groups);
-        return $this;
-    }
-
     /**
      * Perform any tasks that need to happen when the tool is booted.
      *
@@ -41,16 +21,6 @@ class NovaCustomNavigation extends Tool
     }
 
     /**
-     * Turn the available groups into a concrete array
-     *
-     * @param Request $request
-     * @return array
-     */
-    protected function resolveGroups(Request $request) {
-        return $this->navigationGroups;
-    }
-
-    /**
      * Build the view that renders the navigation links for the tool.
      *
      * @return \Illuminate\View\View
@@ -58,12 +28,19 @@ class NovaCustomNavigation extends Tool
     public function renderNavigation()
     {
         $request = request();
-        $navigationGroups = $this->resolveGroups($request);
+
+        $navigationGroups = collect(CustomNavigation::$navigationGroups)
+            ->filter
+            ->authorize($request)
+            ->map(function ($navigation) {
+                return $navigation->jsonSeralize();
+            })
+            ->unique()
+            ->filter
+            ->values();
 
         return view('nova-custom-navigation::navigation', [
-            'navigationGroups' => collect($navigationGroups)->map(function ($group) {
-                return $group->jsonSerialize();
-            })
+            'navigationGroups' => $navigationGroups
         ]);
     }
 }

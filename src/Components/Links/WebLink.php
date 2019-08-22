@@ -1,12 +1,12 @@
 <?php
 
-namespace CodeByKyle\NovaCustomNavigation\Components\Items;
+namespace CodeByKyle\NovaCustomNavigation\Components\Links;
 
-use CodeByKyle\NovaCustomNavigation\Components\NavigationItem;
+use CodeByKyle\NovaCustomNavigation\Components\NavigationLink;
 use Illuminate\Http\Request;
 
 
-class ExternalLink extends NavigationItem
+class WebLink extends NavigationLink
 {
     public static $type = 'link';
 

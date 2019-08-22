@@ -3,17 +3,15 @@
 namespace CodeByKyle\NovaCustomNavigation\Components;
 
 use App\AccountTransferRule;
-use CodeByKyle\NovaCustomNavigation\Components\Items\ExternalLink;
+use CodeByKyle\NovaCustomNavigation\Components\Items\WebLink;
+use CodeByKyle\NovaCustomNavigation\Components\Items\ResourceIndexLink;
+use CodeByKyle\NovaCustomNavigation\Components\Items\ResourceLink;
 use Illuminate\Http\Request;
 use Laravel\Nova\Element;
 
 
 abstract class NavigationGroup extends Element
 {
-    public $component = 'navigation-group';
-
-    public static $linkType = 'route';
-
     public static $label;
 
     public static $icon;
@@ -24,14 +22,15 @@ abstract class NavigationGroup extends Element
 
     public static $alwaysExpanded = false;
 
-    public static $link;
+    public $component = 'navigation-group';
 
     /**
      * The link to go to when the group is clicked
      *
-     * @return |null
+     * @param Request $request
+     * @return null|Redirect $redirect
      */
-    public function link() {
+    public function link(Request $request) {
         return null;
     }
 
@@ -122,7 +121,7 @@ abstract class NavigationGroup extends Element
      * @return array
      */
     protected function resolveItems(Request $request) {
-        return collect($this->links($request))->map(function ($item) use ($request) {
+        return collect($this->items($request))->map(function ($item) use ($request) {
             if (!$item->authorize($request)) {
                 return null;
             }
@@ -135,9 +134,10 @@ abstract class NavigationGroup extends Element
      * Resolve the link for this group
      *
      * @param Request $request
+     * @return null|Redirect $redirect
      */
     protected function resolveLink(Request $request) {
-
+        return $this->link($request);
     }
 
 
@@ -157,7 +157,8 @@ abstract class NavigationGroup extends Element
             'icon' => $this->resolveIcon(),
             'allowExpansion' => static::$allowExpansion,
             'alwaysExpanded' => static::$alwaysExpanded,
-            'links' => $this->resolveLinks($request),
+            'link' => $this->resolveLink($request),
+            'links' => $this->resolveItems($request),
         ]);
     }
 }
