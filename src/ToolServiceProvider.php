@@ -23,11 +23,11 @@ class ToolServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views/application', 'nova-custom-navigation');
 
         Nova::serving(function (ServingNova $event) {
+            CustomNavigation::navigationGroupsIn(app_path('Nova/Navigation'));
+
             Nova::tools([
                 new NovaCustomNavigation()
             ]);
-
-            CustomNavigation::navigationGroupsIn(app_path('Nova/Navigation'));
         });
 
         $this->app->booted(function () {
@@ -37,7 +37,6 @@ class ToolServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CreateNavigation::class,
-                SyncNavigation::class
             ]);
         }
     }

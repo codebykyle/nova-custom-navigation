@@ -6,6 +6,7 @@ use App\AccountTransferRule;
 use CodeByKyle\NovaCustomNavigation\Components\Items\WebLink;
 use CodeByKyle\NovaCustomNavigation\Components\Items\ResourceIndexLink;
 use CodeByKyle\NovaCustomNavigation\Components\Items\ResourceLink;
+use CodeByKyle\NovaCustomNavigation\Components\Links\EmptyLink;
 use Illuminate\Http\Request;
 use Laravel\Nova\Element;
 
@@ -18,19 +19,16 @@ abstract class NavigationGroup extends Element
 
     public static $visible = true;
 
-    public static $allowExpansion = true;
-
-    public static $alwaysExpanded = false;
-
     public $component = 'navigation-group';
 
     /**
      * The link to go to when the group is clicked
      *
      * @param Request $request
-     * @return null|Redirect $redirect
+     * @return NavigationLink|null $link
      */
-    public function link(Request $request) {
+    public function link(Request $request)
+    {
         return null;
     }
 
@@ -39,7 +37,8 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return array
      */
-    public function items(Request $request) {
+    public function items(Request $request)
+    {
         return [];
     }
 
@@ -49,7 +48,8 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return array
      */
-    public function classes(Request $request) {
+    public function classes(Request $request)
+    {
         return [];
     }
 
@@ -57,7 +57,8 @@ abstract class NavigationGroup extends Element
      * Get the label to show in navigation
      * @return string
      */
-    public static function label() {
+    public function resolveLabel()
+    {
         return static::$label;
     }
 
@@ -67,7 +68,8 @@ abstract class NavigationGroup extends Element
      * @return array|string
      * @throws \Throwable
      */
-    public function icon() {
+    public function icon()
+    {
         return view(static::$icon)->render();
     }
 
@@ -77,17 +79,9 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return boolean
      */
-    public function visible(Request $request) {
+    public function visible(Request $request)
+    {
         return static::$visible;
-    }
-
-    /**
-     * Set the item to always be expanded
-     *
-     * @return boolean
-     */
-    public function alwaysExpanded() {
-        return static::$alwaysExpanded;
     }
 
     /**
@@ -96,11 +90,8 @@ abstract class NavigationGroup extends Element
      * @return array|mixed|string
      * @throws \Throwable
      */
-    protected function resolveIcon() {
-        if (is_callable(static::$icon)) {
-            return call_user_func(static::$icon);
-        }
-
+    protected function resolveIcon()
+    {
         return view('nova-custom-navigation::icons.default')->render();
     }
 
@@ -110,7 +101,8 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return array
      */
-    protected function resolveClasses(Request $request) {
+    protected function resolveClasses(Request $request)
+    {
         return $this->classes($request);
     }
 
@@ -120,24 +112,29 @@ abstract class NavigationGroup extends Element
      * @param Request $request
      * @return array
      */
-    protected function resolveItems(Request $request) {
-        return collect($this->items($request))->map(function ($item) use ($request) {
-            if (!$item->authorize($request)) {
-                return null;
-            }
-
-            return $item->jsonSerialize();
-        })->filter();
+    protected function resolveItems(Request $request)
+    {
+        return collect($this->items($request))
+            ->map(function ($item) use ($request) {
+                return $item->authorizedToSee($request);
+            })
+            ->filter()
+            ->all();
     }
 
     /**
      * Resolve the link for this group
      *
      * @param Request $request
-     * @return null|Redirect $redirect
+     * @return NavigationLink|null $redirect
      */
-    protected function resolveLink(Request $request) {
-        return $this->link($request);
+    protected function resolveLink(Request $request)
+    {
+        if ($link = $this->link($request)) {
+            return $link->label($this->resolveLabel());
+        } else {
+            return (new EmptyLink())->label($this->resolveLabel());
+        }
     }
 
 
@@ -152,13 +149,11 @@ abstract class NavigationGroup extends Element
         $request = request();
 
         return array_merge(parent::jsonSerialize(), [
-            'label' => $this->label(),
+            'label' => $this->resolveLabel(),
             'classes' => $this->resolveClasses($request),
             'icon' => $this->resolveIcon(),
-            'allowExpansion' => static::$allowExpansion,
-            'alwaysExpanded' => static::$alwaysExpanded,
             'link' => $this->resolveLink($request),
-            'links' => $this->resolveItems($request),
+            'items' => $this->resolveItems($request),
         ]);
     }
 }

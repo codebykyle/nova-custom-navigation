@@ -2,7 +2,7 @@
 
 namespace CodeByKyle\NovaCustomNavigation;
 
-use CodeByKyle\NovaCustomNavigation\Components;
+use CodeByKyle\NovaCustomNavigation\Components\NavigationGroup;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
@@ -43,19 +43,47 @@ class CustomNavigation
             }
         }
 
-        $navGroupCollection = collect($navGroups)->transform(function ($navGroup) {
-            if ($navGroup instanceof NavigationGroup) {
-                return $navGroup;
-            }
+        $navGroupCollection = static::sortNavGroups(
+            static::makeGroups($navGroups), $sortBy
+        );
 
-            return app()->make($navGroup);
-        });
+        static::navigationGroups($navGroupCollection);
+    }
 
-        foreach ($sortBy as $sort) {
+    /**
+     * If we are using autoloading, we can apply sorts via class properties.
+     * This function sorts by those keys.
+     *
+     * @param $navGroups
+     * @param $sortKeys
+     * @return mixed
+     */
+    public static function sortNavGroups($navGroups, $sortKeys) {
+        $navGroupCollection = collect($navGroups);
+
+        foreach ($sortKeys as $sort) {
             $navGroupCollection = $navGroupCollection->sortBy($sort);
         }
 
-        static::navigationGroups($navGroupCollection->all());
+        return $navGroupCollection->all();
+    }
+
+    /**
+     * Turn the name of a class into an instance of that class.
+     *
+     * @param $navGroups
+     * @return \Illuminate\Support\Collection
+     */
+    public static function makeGroups($navGroups) {
+        return collect($navGroups)
+            ->transform(function ($navGroup) {
+                if ($navGroup instanceof NavigationGroup) {
+                    return $navGroup;
+                }
+
+                return app()->make($navGroup);
+            })
+            ->all();
     }
 
     /**
@@ -65,7 +93,11 @@ class CustomNavigation
      * @return CustomNavigation
      */
     public static function navigationGroups(array $items) {
-        static::$navigationGroups = array_merge(static::$navigationGroups, $items);
+        static::$navigationGroups = array_merge(
+            static::$navigationGroups,
+            static::makeGroups($items)
+        );
+
         return new static;
     }
 }

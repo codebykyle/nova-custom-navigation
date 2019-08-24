@@ -1,15 +1,23 @@
 export default {
     props: {
+        label: {
+            default: "Navigation Item",
+            types: [String]
+        },
+        link: {
+            default: () => ([]),
+            types: [Array]
+        },
+        items: {
+            default: () => ([]),
+            types: [Array]
+        },
         classes: {
             default: () => ([]),
             types: [Array]
         },
         icon: {
             default: "",
-            types: [String]
-        },
-        label: {
-            default: "Navigation Item",
             types: [String]
         },
         allowExpansion: {
@@ -20,10 +28,10 @@ export default {
             default: false,
             types: [Boolean]
         },
-        links: {
-            default: () => ([]),
-            types: [Array]
-        },
+        hasActive: {
+            default: false,
+            types: [Boolean]
+        }
     },
 
     methods: {
@@ -34,34 +42,7 @@ export default {
 
     computed: {
         isExpanded() {
-            return this.alwaysExpanded || this.isActive
-        },
-
-        isActive() {
-            return this.isGroupActive || this.isSubItemActive;
-        },
-
-        isGroupActive() {
-            return false;
-        },
-
-        isSubItemActive() {
-            let currentResourceName = _.get(this.$route, 'params.resourceName', false);
-
-            let hasActive = false;
-
-            _.forEach(this.links, (item) => {
-                let groupResourceName = _.get(item.linkUrl, 'params.resourceName', false);
-
-                if (groupResourceName !== false) {
-                    if (currentResourceName === groupResourceName) {
-                        hasActive = true;
-                        return false;
-                    }
-                }
-            });
-
-            return hasActive;
-        },
+            return true;
+        }
     }
 }

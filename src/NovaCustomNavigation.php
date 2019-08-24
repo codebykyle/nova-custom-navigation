@@ -5,6 +5,7 @@ namespace CodeByKyle\NovaCustomNavigation;
 use Illuminate\Http\Request;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use mysql_xdevapi\Exception;
 
 
 class NovaCustomNavigation extends Tool
@@ -29,18 +30,19 @@ class NovaCustomNavigation extends Tool
     {
         $request = request();
 
+
         $navigationGroups = collect(CustomNavigation::$navigationGroups)
-            ->filter
-            ->authorize($request)
+            ->filter()
             ->map(function ($navigation) {
-                return $navigation->jsonSeralize();
-            })
-            ->unique()
-            ->filter
-            ->values();
+                return $navigation->jsonSerialize();
+            });
+//            ->authorize($request)
+//            ->unique()
+//            ->filter
+//            ->values();
 
         return view('nova-custom-navigation::navigation', [
-            'navigationGroups' => $navigationGroups
+            'navigation' => $navigationGroups
         ]);
     }
 }

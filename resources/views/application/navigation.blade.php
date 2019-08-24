@@ -1,1 +1,1 @@
-<h1>Hello, World!</h1>
+<custom-navigation :navigation="{{ json_encode($navigation) }}"  />

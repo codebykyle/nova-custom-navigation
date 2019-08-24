@@ -1,0 +1,38 @@
+<?php
+
+namespace DummyNamespace;
+
+use CodeByKyle\NovaCustomNavigation\Components\Groups\CollapsibleGroup;
+use CodeByKyle\NovaCustomNavigation\Components\Links\NavigationLink;
+use Illuminate\Http\Request;
+
+class DummyClass extends CollapsibleGroup
+{
+    /**
+     * The Navigation Group label.
+     *
+     * @var string
+     */
+    public static $label = "{{ label }}";
+
+    /**
+     * The link of the group title.
+     *
+     * @var string
+     * @return NavigationLink|null
+     */
+    public function link(Request $request) {
+        return null;
+    }
+
+    /**
+     * The sub-items of this navigation group.
+     *
+     * @var string
+     * @return array
+     */
+    public function items(Request $request)
+    {
+        return [];
+    }
+}

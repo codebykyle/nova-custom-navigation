@@ -1,6 +1,6 @@
 <template>
     <a
-        :href="linkUrl"
+        :href="link"
         :target="target"
         class="cursor-pointer select-none flex items-center font-normal dim text-white mb-3 text-base no-underline">
         <span class="resource-label">
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-    import LinkItem from '../mixins/LinkItem'
+    import Link from '../mixins/Link'
 
     export default {
         name: "external-link",
-        mixins: [LinkItem]
+        mixins: [Link]
     }
 </script>
 

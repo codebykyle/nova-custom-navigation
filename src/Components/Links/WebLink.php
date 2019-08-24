@@ -3,13 +3,11 @@
 namespace CodeByKyle\NovaCustomNavigation\Components\Links;
 
 use CodeByKyle\NovaCustomNavigation\Components\NavigationLink;
+use CodeByKyle\NovaCustomNavigation\Components\Redirects\WebRedirect;
 use Illuminate\Http\Request;
-
 
 class WebLink extends NavigationLink
 {
-    public static $type = 'link';
-
     public $label;
 
     public $url;
@@ -45,21 +43,22 @@ class WebLink extends NavigationLink
     /**
      * Get the label of the navigation item
      *
-     * @return string
-     */
-    public function linkType()
-    {
-        return static::$type;
-    }
-
-    /**
-     * Get the label of the navigation item
-     *
      * @return mixed
      */
     public function label()
     {
         return $this->label;
+    }
+
+    /**
+     * Get the redirect
+     *
+     * @param Request $request
+     * @return  WebRedirect|null
+     */
+    public function getRedirect(Request $request)
+    {
+        return WebRedirect::make($this->url, $this->target);
     }
 
     /**
@@ -69,8 +68,6 @@ class WebLink extends NavigationLink
      */
     public function jsonSerialize()
     {
-        return array_merge(parent::jsonSerialize(), [
-            'target' => $this->target
-        ]);
+        return array_merge(parent::jsonSerialize(), []);
     }
 }

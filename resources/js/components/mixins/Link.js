@@ -4,7 +4,7 @@ export default {
             default: "",
             types: [String]
         },
-        linkUrl: {
+        link: {
             default: null,
             types: [String]
         },

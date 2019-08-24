@@ -1,6 +1,6 @@
 <template>
     <router-link
-        :to="linkUrl"
+        :to="link"
         v-if="visible"
         class="cursor-pointer select-none flex items-center font-normal dim text-white mb-3 text-base no-underline"  >
             <span class="resource-label">
@@ -10,10 +10,11 @@
 </template>
 
 <script>
-    import LinkItem from '../mixins/LinkItem'
+    import Link from '../mixins/Link'
+
     export default {
         name: "resource-link",
-        mixins: [LinkItem]
+        mixins: [Link]
     }
 </script>
 

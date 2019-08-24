@@ -2,10 +2,12 @@
 
 namespace CodeByKyle\NovaCustomNavigation\Components\Redirects;
 
+use CodeByKyle\NovaCustomNavigation\Components\Redirect;
+use CodeByKyle\NovaCustomNavigation\Components\RedirectTypes;
+use CodeByKyle\NovaCustomNavigation\Components\RouteTypes;
 use Illuminate\Http\Request;
 
-
-class RouteRedirect implements Redirect
+class RouteRedirect extends Redirect
 {
     /**
      * An array representation of a vue-router/nova link
@@ -14,10 +16,11 @@ class RouteRedirect implements Redirect
     public $route;
 
     /**
-     * The type of route this should use. Often 'web' or 'route'
+     * The route type to display
+     * @see RouteTypes
      * @var string
      */
-    public static $type = 'route';
+    public $routeType;
 
     /**
      * Link constructor.
@@ -50,6 +53,18 @@ class RouteRedirect implements Redirect
     }
 
     /**
+     * Manually set the route type
+     * @see RouteTypes
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function routeType($type) {
+        $this->routeType = $type;
+        return $this;
+    }
+
+    /**
      * Get the navigation URL or redirect
      *
      * @param Request $request
@@ -60,13 +75,41 @@ class RouteRedirect implements Redirect
     }
 
     /**
-     * Get the label of the navigation item
+     * Get the redirect type
      *
      * @return string
      */
-    public function linkType()
+    public function redirectType()
     {
-        return static::$type;
+        return RedirectTypes::$ROUTE;
+    }
+
+    /**
+     * The type of object that this route redirects to. If it is not set,
+     * try to guess the route type based on the Nova Link
+     *
+     * @see RouteTypes
+     * @return string
+     */
+    public function getRouteType() {
+        if (!empty($this->routeType)) {
+            return $this->routeType;
+        }
+
+        switch(collect($this->route)->get('name')) {
+            case 'dashboard':
+            case 'dashboard.custom':
+                return RouteTypes::$DASHBOARD;
+            case 'index':
+            case 'detail':
+            case 'create':
+            case 'edit':
+                return RouteTypes::$RESOURCE;
+            case 'lens':
+                return RouteTypes::$LENS;
+            default:
+                return RouteTypes::$TOOL;
+        }
     }
 
     /**
@@ -76,9 +119,8 @@ class RouteRedirect implements Redirect
      */
     public function jsonSerialize()
     {
-        return [
-            'route' => json_encode($this->getUrl()),
-            'linkType' => static::linkType()
-        ];
+        return array_merge(parent::jsonSerialize(), [
+            'routeType' => $this->getRouteType(),
+        ]);
     }
 }

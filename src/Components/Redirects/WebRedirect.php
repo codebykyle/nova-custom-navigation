@@ -2,16 +2,15 @@
 
 namespace CodeByKyle\NovaCustomNavigation\Components\Redirects;
 
+use CodeByKyle\NovaCustomNavigation\Components\Redirect;
+use CodeByKyle\NovaCustomNavigation\Components\RedirectTypes;
 use Illuminate\Http\Request;
 
-
-class WebRedirect implements Redirect
+class WebRedirect extends Redirect
 {
     public $url;
 
     public $target;
-
-    public static $type = 'link';
 
     /**
      * Link constructor.
@@ -40,9 +39,9 @@ class WebRedirect implements Redirect
      *
      * @return string
      */
-    public function linkType()
+    public function redirectType()
     {
-        return static::$type;
+        return RedirectTypes::$WEB;
     }
 
     /**
@@ -52,10 +51,9 @@ class WebRedirect implements Redirect
      */
     public function jsonSerialize()
     {
-        return [
-            'url' => $this->getUrl(request()),
+        return array_merge(parent::jsonSerialize(), [
+            'routeType' => $this->getRouteType(),
             'target' => $this->target,
-            'linkType' => static::linkType()
-        ];
+        ]);
     }
 }

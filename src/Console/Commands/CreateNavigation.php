@@ -35,8 +35,7 @@ class CreateNavigation extends GeneratorCommand
     protected function buildClass($name)
     {
         $stub = parent::buildClass($name);
-        $stub = str_replace('uri-key', Str::snake($this->argument('name'), '-'), $stub);
-        return str_replace('dashboard-name', ucwords(Str::snake($this->argument('name'), ' ')), $stub);
+        return str_replace('{{ label }}',ucwords(Str::snake($this->argument('name'), ' ')), $stub);
     }
 
     /**

@@ -1,6 +1,6 @@
 <template>
     <div class="mb-8">
-        <div class="" v-for="group in navigationGroups">
+        <div class="" v-for="group in navigation">
             <div
                 :is="group.component"
                 v-bind="group">
@@ -12,60 +12,89 @@
 <script>
     import _ from 'lodash';
 
+    const RESOURCE = 'RESOURCE';
+    const DASHBOARD = 'DASHBOARD';
+    const LENS = 'LENS';
+    const TOOL = 'TOOL';
+
+
     export default {
         props: {
-            navigationGroups: {
+            navigation: {
                 default: () => ([]),
                 types: [Array]
             }
         },
 
+        data: () => ({
+            activeNavigation: null
+        }),
+
+        created() {
+            this.$watch('$route', () => {
+                this.setActiveNavGroup();
+            })
+        },
+
         mounted() {
-            //
+
         },
 
         methods: {
-            resourceLink(resource) {
-                return resource.link;
-            },
+            setActiveNavGroup() {
+                let linkMatches = this.$route.matched;
+                let activeLinkType = this.activeLinkType;
 
-            shouldShowResource(resource) {
-                return this.isExpanded && resource.isVisible
-            },
+                console.log('Active link type', activeLinkType);
+                console.log('link matches', linkMatches);
+
+                let activeNavGroup = _.find(this.navigation, function (navigationGroup) {
+                    let groupRoute = _.get(navigationGroup, 'link.route');
+
+                    console.log('Group routes', groupRoute);
+
+                    let subItems = _.map(_.get(navigationGroup, 'items', []), function (item) {
+                        return _.get(item, 'link')
+                    });
+
+                    console.log('Sub routes', subItems);
+
+                    let linksRoutes = [groupRoute, ...subItems].filter(function (e) {
+                        return e != null
+                    });
+
+                    console.log('Link routes', linksRoutes);
+
+                    for (let linkItem in linksRoutes) {
+                        if (linkItem.name in linkMatches) {
+                            return true
+                        }
+                    }
+
+                    return false;
+                });
+
+                this.activeNavigation = activeNavGroup;
+            }
+
         },
 
         computed: {
-            isLink() {
-                return this.linkType === 'link';
-            },
-
-            isRoute() {
-                return this.linkType === 'route';
-            },
-
-            isExpanded() {
-                return this.alwaysExpanded || this.isActive
-            },
-
-            groupLink() {
-                return this.route;
-            },
-
-            isActive() {
-                console.log(this.$route);
-
-                const resourceName = _.get(this.$route, 'params.resourceName', false);
-                const categoryDashboard = _.get(this.$route, 'params.categoryName', false);
-
-                if(resourceName) {
-                    return _.map(this.resources, 'uriKey').includes(resourceName)
+            activeLinkType() {
+                switch (this.$route.name) {
+                    case 'index':
+                    case 'detail':
+                    case 'create':
+                    case 'edit':
+                        return RESOURCE;
+                    case 'dashboard.custom':
+                    case 'dashboard':
+                        return DASHBOARD;
+                    case 'lens':
+                        return LENS;
+                    default:
+                        return TOOL
                 }
-
-                if (categoryDashboard) {
-                    return categoryDashboard === this.dashboardUri;
-                }
-
-                return false;
             }
         }
     }

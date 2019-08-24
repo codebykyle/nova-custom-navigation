@@ -1,32 +1,52 @@
 <template>
-    @if (count(\Laravel\Nova\Nova::availableResources(request())))
-    <h3 class="flex items-center font-normal text-white mb-6 text-base no-underline">
-        <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <path fill="var(--sidebar-icon)" d="M3 1h4c1.1045695 0 2 .8954305 2 2v4c0 1.1045695-.8954305 2-2 2H3c-1.1045695 0-2-.8954305-2-2V3c0-1.1045695.8954305-2 2-2zm0 2v4h4V3H3zm10-2h4c1.1045695 0 2 .8954305 2 2v4c0 1.1045695-.8954305 2-2 2h-4c-1.1045695 0-2-.8954305-2-2V3c0-1.1045695.8954305-2 2-2zm0 2v4h4V3h-4zM3 11h4c1.1045695 0 2 .8954305 2 2v4c0 1.1045695-.8954305 2-2 2H3c-1.1045695 0-2-.8954305-2-2v-4c0-1.1045695.8954305-2 2-2zm0 2v4h4v-4H3zm10-2h4c1.1045695 0 2 .8954305 2 2v4c0 1.1045695-.8954305 2-2 2h-4c-1.1045695 0-2-.8954305-2-2v-4c0-1.1045695.8954305-2 2-2zm0 2v4h4v-4h-4z"
-            />
-        </svg>
-        <span class="sidebar-label">{{ __('Resources') }}</span>
-    </h3>
+    <div class="mb-8">
+        <div class="navigation-group">
+            <div
+                :is="link.component"
+                class=""
+                v-bind="link">
+            </div>
+        </div>
 
-    @foreach($navigation as $group => $resources)
-    @if (count($groups) > 1)
-    <h4 class="ml-8 mb-4 text-xs text-white-50% uppercase tracking-wide">{{ $group }}</h4>
-    @endif
-
-    <ul class="list-reset mb-8">
-        @foreach($resources as $resource)
-        <li class="leading-tight mb-4 ml-8 text-sm">
-            <router-link :to="{
-                        name: 'index',
-                        params: {
-                            resourceName: '{{ $resource::uriKey() }}'
-                        }
-                    }" class="text-white text-justify no-underline dim">
-                {{ $resource::label() }}
-            </router-link>
-        </li>
-        @endforeach
-    </ul>
-    @endforeach
-    @endif
+        <ul class="list-reset mb-4 ml-32px expandable navigation-list" v-if="isExpanded">
+            <li class="leading-tight text-sm navigation-item" v-for="item in items">
+                <div
+                    :is="item.component"
+                    class=""
+                    v-bind="item">
+                </div>
+            </li>
+        </ul>
+    </div>
 </template>
+
+<script>
+    import _ from 'lodash';
+    import NavGroupMixin from '../mixins/NavigationGroup'
+
+    export default {
+        mixins: [
+            NavGroupMixin
+        ],
+
+        data: () => ({
+            opened: false,
+        }),
+
+        methods: {
+            toggleExpand() {
+                this.opened = !this.opened;
+            },
+        },
+
+        computed: {
+            isGroupActive() {
+                return this.opened;
+            },
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+
+</style>
