@@ -8,7 +8,7 @@
     import LinkMixin from '../mixins/Link'
 
     export default {
-        name: "resource-link",
+        name: "ResourceLink",
 
         mixins: [LinkMixin],
 

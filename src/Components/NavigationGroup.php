@@ -115,10 +115,9 @@ abstract class NavigationGroup extends Element
     protected function resolveItems(Request $request)
     {
         return collect($this->items($request))
-            ->map(function ($item) use ($request) {
+            ->filter(function ($item) use ($request) {
                 return $item->authorizedToSee($request);
             })
-            ->filter()
             ->all();
     }
 

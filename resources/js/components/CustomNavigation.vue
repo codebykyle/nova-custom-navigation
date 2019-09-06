@@ -12,12 +12,6 @@
 <script>
     import _ from 'lodash';
 
-    const RESOURCE = 'RESOURCE';
-    const DASHBOARD = 'DASHBOARD';
-    const LENS = 'LENS';
-    const TOOL = 'TOOL';
-
-
     export default {
         props: {
             navigation: {

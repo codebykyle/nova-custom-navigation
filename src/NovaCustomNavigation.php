@@ -30,12 +30,8 @@ class NovaCustomNavigation extends Tool
     {
         $request = request();
 
-
         $navigationGroups = collect(CustomNavigation::$navigationGroups)
-            ->filter()
-            ->map(function ($navigation) {
-                return $navigation->jsonSerialize();
-            });
+            ->filter();
 //            ->authorize($request)
 //            ->unique()
 //            ->filter

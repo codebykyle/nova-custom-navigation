@@ -1,21 +1,19 @@
 <template>
     <div class="mb-8">
         <div class="navigation-group">
-            <a href="#" @click.prevent="toggleExpand" class="cursor-pointer select-none flex items-center font-normal dim text-white mb-4 text-base no-underline">
-                <span class="sidebar-icon mr-12pxn" v-html="icon"></span>
-                <span class="sidebar-label">
-                    {{ label }}
-                </span>
-            </a>
+            <div
+                    :is="groupLinkComponent"
+                    class=""
+                    v-bind="link">
+            </div>
         </div>
 
         <ul class="list-reset mb-4 ml-32px expandable navigation-list" v-if="isExpanded">
-            <li class="leading-tight text-sm navigation-item" v-for="link in links">
+            <li class="leading-tight text-sm navigation-item" v-for="item in items">
                 <div
-                    :is="link.component"
-                    v-if="shouldShowLink(link)"
-                    class=""
-                    v-bind="link">
+                        :is="item.component"
+                        class=""
+                        v-bind="item">
                 </div>
             </li>
         </ul>
@@ -42,6 +40,14 @@
         },
 
         computed: {
+            groupLinkComponent() {
+                if (this.link) {
+                    return this.link.component;
+                }
+
+                return 'empty-link';
+            },
+
             isGroupActive() {
                 return this.opened;
             },

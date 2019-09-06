@@ -6,5 +6,5 @@ use CodeByKyle\NovaCustomNavigation\Components\NavigationGroup;
 
 class CollapsibleGroup extends NavigationGroup
 {
-    public $component = 'navigation-group';
+    public $component = 'collapsible-group';
 }

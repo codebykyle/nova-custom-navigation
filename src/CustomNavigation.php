@@ -8,6 +8,11 @@ use Symfony\Component\Finder\Finder;
 
 class CustomNavigation
 {
+    /**
+     * Custom Navigation groups
+     *
+     * @var array
+     */
     public static $navigationGroups = [];
 
     /**
@@ -99,5 +104,16 @@ class CustomNavigation
         );
 
         return new static;
+    }
+
+    /**
+     * Override the existing navigation groups by specifying an array
+     *
+     * @param array $array
+     * @return CustomNavigation
+     */
+    public static function setNavigationGroups(array $array) {
+        static::$navigationGroups = self::makeGroups($array);
+        return new static();
     }
 }
